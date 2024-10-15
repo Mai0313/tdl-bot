@@ -29,16 +29,25 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             # 獲取圖片文件的完整連結
             _file = await context.bot.get_file(highest_resolution_photo.file_id)
             file_url = _file.file_path
-        logfire.info(
-            "Message Details",
-            post_id=post_id,
-            post_chatname=post_chatname,
-            post_sender=post_sender,
-            url=file_url,
-        )
-        await update.message.reply_text(
-            f"Post ID: {post_id}\nChat Name: {post_chatname}\nPost Sender: {post_sender}\nFile URL: {file_url}"
-        )
+    else:
+        if update.message.text.startswith("https://t.me/"):
+            post_id = update.message.text.split("/")[-1]
+            post_sender = update.message.text.split("/")[-2]
+            post_chatname = "private chat"
+            file_url = update.message.text
+        else:
+            logfire.info("Received a text message", text=update.message.text)
+            return await update.message.reply_text("好色喔 但你不會用對吧 嘿嘿")
+    logfire.info(
+        "Message Details",
+        post_id=post_id,
+        post_sender=post_sender,
+        post_chatname=post_chatname,
+        url=file_url,
+    )
+    return await update.message.reply_text(
+        f"Post ID: {post_id}\nPost Sender: {post_sender}\nChat Name: {post_chatname}\nFile URL: {file_url}"
+    )
 
 
 # 啟動命令的處理函數
@@ -50,7 +59,6 @@ async def start(update: Update, context: CallbackContext) -> None:
 
 # 主函數
 def main() -> None:
-    # 替換為您的 bot token
     bot_token = "7929041341:AAFVQrcEfGFaPh1bpkJz5wy3ejPYrZKveIM"  # noqa: S105
     application = Application.builder().token(bot_token).build()
 
