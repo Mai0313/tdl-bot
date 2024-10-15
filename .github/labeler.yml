@@ -1,0 +1,65 @@
+# Feature Branches
+feature:
+  - head-branch:
+      - "feat/*"                    # Feature branches
+      - "refactor/*"                # Refactor branches
+      - "enhance/*"                 # Enhancement branches
+      - "perf/*"                    # Performance improvement branches
+  - changed-files:
+      - "src/**/*"                  # Any file in src, except documentation files
+      - "!src/docs/*"
+
+# Bug Fixes
+bugfix:
+  - head-branch:
+      - "^bug"                      # Branches starting with 'bug'
+      - "bug"
+      - "fix/*"                     # Fix branches
+      - "bugfix/*"                  # Bugfix branches
+      - "hotfix/*"                  # Hotfix branches
+
+# Maintenance
+chore:
+  - head-branch:
+      - "chore/*"                   # Chore branches
+      - "style/*"                   # Style branches
+      - "test/*"                    # Test branches
+      - "ci/*"                      # CI branches
+      - "cd/*"                      # CD branches
+      - "config/*"                  # Configuration branches
+  - changed-files:
+      - ".github/**"                # GitHub Actions and workflows
+      - ".pre-commit-config.yaml"   # Pre-commit hooks configuration
+      - "pyproject.toml"            # Python project configuration
+
+# Dependencies
+dependencies:
+  - changed-files:
+      - "requirements.txt"          # Python dependencies
+      - "requirements.lock"         # Rye lock file
+      - "requirements-dev.lock"     # Rye dev lock file
+      - "poetry.lock"               # Poetry lock file
+
+# Documentation
+documentation:
+  - head-branch:
+      - "docs/*"                    # Documentation branches
+      - "doc/*"                     # Documentation branches
+      - "readme/*"                  # Readme branches
+  - changed-files:
+      - "**/*.md"                   # Markdown files
+      - "docs/**/*"                 # Documentation files
+      - "**/*.ipynb"                # All Jupyter Notebook files
+      - "notebooks/**/*"
+      - "notebook/**/*"
+
+# Pytest Unit Tests
+unit-test:
+  - changed-files:
+      - "**/test_*.py"              # Unit test files
+      - "tests/**/*"                # Any file in tests directory
+
+revert:
+  - head-branch:
+      - "revert/*"                  # Revert branches
+      - "revert-*"                  # Revert branches
