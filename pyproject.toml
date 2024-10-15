@@ -57,9 +57,9 @@ omit = ["./src/ameba/*"]
 # ================== #
 
 [project]
-name = "repo-template"
+name = "tdl"
 version = "0.1.0"
-description = "Repository template for Python projects"
+description = "Telegram bot for tdl."
 authors = [
     { name = "Wei", email = "mai@mai0313.com" },
 ]
