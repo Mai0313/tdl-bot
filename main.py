@@ -45,7 +45,9 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         func="download", serve=False, skip_same=True, limit=4, pool=0, threads=8
     )
     td.run(url=file_url)
-    return await update.message.reply_text(f"下載完成!\nFile URL: {file_url}\nFolder: {post_chatname}")
+    return await update.message.reply_text(
+        f"下載完成!\nFile URL: {file_url}\nFolder: {post_chatname}"
+    )
 
 
 # 啟動命令的處理函數
