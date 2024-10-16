@@ -60,7 +60,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 # 啟動命令的處理函數
 async def start(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text(
-        "Hello! Send me a message with a photo or video, and I will print out the highest resolution photo or video link."
+        "轉發訊息或提供一個連結，我會幫你下載的！"
     )
 
 
