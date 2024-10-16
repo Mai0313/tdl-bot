@@ -68,6 +68,7 @@ dependencies = [
     "python-telegram-bot>=21.6",
     "logfire>=1.1.0",
     "rich>=13.9.2",
+    "pydantic-settings>=2.5.2",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
@@ -85,8 +86,13 @@ docs = [
 [tool.rye.scripts]
 "deploy:install" = "rye sync --features docs"
 "deploy:docs" = "mkdocs gh-deploy"
-docs = { cmd = "mkdocs serve" }
 deploy = { chain = ["deploy:install", "deploy:docs"]}
+
+"setup:install" = "rye sync"
+"setup:move_tdl" = "cp ./binaries/tdl ~/.local/bin/tdl"
+setup = { chain = ["setup:install", "setup:move_tdl"]}
+
+docs = { cmd = "mkdocs serve" }
 main = { cmd = "python ./main.py" }
 
 [[tool.rye.sources]]
@@ -309,6 +315,8 @@ ignore = [
     "PERF401",
     # Use `list` or `list.copy` to create a copy of a list
     "PERF402",
+    # subprocess
+    "S404", "S603",
     ]
 
 [tool.ruff.lint.pycodestyle]

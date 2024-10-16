@@ -2,9 +2,12 @@ import logfire
 from telegram import Update
 from rich.console import Console
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
+from src.types.config import Config
+from src.utils.processor import DownloadProcessor
 
 logfire.configure(send_to_logfire=False)
 console = Console()
+config = Config()
 
 
 async def handle_message(update: Update, context: CallbackContext) -> None:
@@ -45,6 +48,10 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         post_chatname=post_chatname,
         url=file_url,
     )
+    td = DownloadProcessor(
+        func="download", serve=False, skip_same=True, limit=4, pool=0, threads=8
+    )
+    td.run(url=file_url)
     return await update.message.reply_text(
         f"Post ID: {post_id}\nPost Sender: {post_sender}\nChat Name: {post_chatname}\nFile URL: {file_url}"
     )
@@ -59,7 +66,7 @@ async def start(update: Update, context: CallbackContext) -> None:
 
 # 主函數
 def main() -> None:
-    bot_token = "7929041341:AAFVQrcEfGFaPh1bpkJz5wy3ejPYrZKveIM"  # noqa: S105
+    bot_token = config.token
     application = Application.builder().token(bot_token).build()
 
     # 添加處理程序
