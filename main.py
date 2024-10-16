@@ -20,6 +20,10 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         post_sender: str = update.message.api_kwargs["forward_from_chat"]["username"]
         # >>> Output: wanjianxiuxishi
 
+        # 聊天室名稱當資料夾名稱
+        post_chatname: str = update.message.api_kwargs["forward_from_chat"]["title"]
+        # >>> Output: 晚间休息室🔞
+
         file_url = f"https://t.me/{post_sender}/{post_id}"
 
         if update.message.photo:
@@ -41,7 +45,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         func="download", serve=False, skip_same=True, limit=4, pool=0, threads=8
     )
     td.run(url=file_url)
-    return await update.message.reply_text(f"下載完成!\nFile URL: {file_url}")
+    return await update.message.reply_text(f"下載完成!\nFile URL: {file_url}\nFolder: {post_chatname}")
 
 
 # 啟動命令的處理函數

@@ -73,6 +73,6 @@ class DownloadProcessor(BaseModel):
                 text=True,
                 shell=isinstance(_command, str),
             )
-            logfire.info("Command Output:", output=result.stdout)
+            logfire.info(f"Command Output:\n{result.stdout}")
         except subprocess.CalledProcessError as e:
             logfire.error("Error:", error=e.stderr, command=_command, _exc_info=True)
