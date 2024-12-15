@@ -1,13 +1,11 @@
 import logfire
 from pydantic import Field, AliasChoices
-from telegram import Update
-from rich.console import Console
+from telegram import Update, Bot, PhotoSize, File
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
 from pydantic_settings import BaseSettings
 from src.tdl.processor import TDLManager
 
 logfire.configure(send_to_logfire=False)
-console = Console()
 
 
 class Config(BaseSettings):
@@ -37,10 +35,11 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 
         if update.message.photo:
             # 選擇最高解析度的圖片（通常是列表中的最後一個）
-            highest_resolution_photo = max(update.message.photo, key=lambda p: p.file_size)
+            highest_resolution_photo: PhotoSize = max(update.message.photo, key=lambda p: p.file_size)
             # 獲取圖片文件的完整連結
-            _file = await context.bot.get_file(highest_resolution_photo.file_id)
-            file_url = _file.file_path
+            bot_: Bot = context.bot
+            file_ = await bot_.get_file(highest_resolution_photo.file_id)
+            file_url = file_.file_path
     else:
         if update.message.text.startswith("https://t.me/"):
             post_id = update.message.text.split("/")[-1]
