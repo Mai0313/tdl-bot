@@ -50,22 +50,15 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
     )
 
 
-# 啟動命令的處理函數
 async def start(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text("轉發訊息或提供一個連結，我會幫你下載的!")
 
 
-# 主函數
 def main() -> None:
-    bot_token = config.token
+    bot_token = config.telegram_token
     application = Application.builder().token(bot_token).build()
-
-    # 添加處理程序
     application.add_handler(CommandHandler("start", start))
-    # application.add_handler(MessageHandler(filters.ATTACHMENT, handle_message))
     application.add_handler(MessageHandler(filters.ALL, handle_message))
-
-    # 開始執行 bot
     application.run_polling()
 
 
