@@ -1,8 +1,10 @@
+from pathlib import Path
+
+import anyio
 import httpx
 import logfire
 from pydantic import Field, AliasChoices
 from telegram import Bot, Update, PhotoSize
-import anyio
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
 from pydantic_settings import BaseSettings
 from src.tdl.processor import TDLManager
@@ -33,6 +35,9 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         post_chatname: str = update.message.api_kwargs["forward_from_chat"]["title"]
         # >>> Output: 晚间休息室🔞
 
+        output_path = f"./downloads/{post_chatname}"
+        output_path = Path(output_path)
+
         file_url = f"https://t.me/{post_sender}/{post_id}"
 
         if update.message.photo:
@@ -46,7 +51,8 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             file_url = file_.file_path
             async with httpx.AsyncClient() as client:
                 response = await client.get(url=file_url)
-                async with await anyio.open_file(f"download/{post_chatname}/{post_id}.jpg", "wb") as file:
+                response.json()
+                async with await anyio.open_file(f"{output_path.as_posix()}/{post_id}.jpg", "wb") as file:
                     await file.write(response.content)
     else:
         if update.message.text.startswith("https://t.me/"):
@@ -60,7 +66,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
     td = TDLManager(func="download", serve=False, skip_same=True, limit=4, pool=0, threads=8)
     td.run(url=file_url)
     return await update.message.reply_text(
-        f"下載完成!\nFile URL: {file_url}\nFolder: {post_chatname}"
+        f"下載完成!\nFile URL: {file_url}\nFolder: {output_path.as_posix()}"
     )
 
 
