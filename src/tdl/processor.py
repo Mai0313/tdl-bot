@@ -34,13 +34,13 @@ class TDLManager(BaseModel):
     @computed_field
     @property
     def tdl(self) -> str:
-        tdl = "./binaries/tdl"
+        tdl = "./src/tdl/binaries/tdl"
 
         if platform.system() == "Windows":
-            tdl = "./binaries/tdl.exe"
+            tdl = "./src/tdl/binaries/tdl.exe"
 
         if platform.system() == "Linux":
-            system_path = Path("~/.local/bin/tdl").expanduser()
+            system_path = Path("./src/tdl/binaries/tdl").expanduser()
             if system_path.exists():
                 tdl = "tdl"
         return tdl
