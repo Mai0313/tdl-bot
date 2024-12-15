@@ -4,7 +4,7 @@ from telegram import Update
 from rich.console import Console
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
 from pydantic_settings import BaseSettings
-from src.utils.processor import TDLManager
+from src.tdl.processor import TDLManager
 
 logfire.configure(send_to_logfire=False)
 console = Console()
