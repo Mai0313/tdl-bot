@@ -5,6 +5,8 @@ import subprocess
 import logfire
 from pydantic import Field, BaseModel, computed_field
 
+logfire.configure(send_to_logfire=False)
+
 
 class TDLManager(BaseModel):
     func: str = Field(
