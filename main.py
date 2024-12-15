@@ -3,7 +3,7 @@ from telegram import Update
 from rich.console import Console
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
 from src.types.config import Config
-from src.utils.processor import DownloadProcessor
+from src.utils.processor import TDLManager
 
 logfire.configure(send_to_logfire=False)
 console = Console()
@@ -41,9 +41,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             logfire.info("Received a text message", text=update.message.text)
             return await update.message.reply_text("好色喔 但你不會用對吧 嘿嘿")
     logfire.info("Message Details", post_id=post_id, post_sender=post_sender, url=file_url)
-    td = DownloadProcessor(
-        func="download", serve=False, skip_same=True, limit=4, pool=0, threads=8
-    )
+    td = TDLManager(func="download", serve=False, skip_same=True, limit=4, pool=0, threads=8)
     td.run(url=file_url)
     return await update.message.reply_text(
         f"下載完成!\nFile URL: {file_url}\nFolder: {post_chatname}"

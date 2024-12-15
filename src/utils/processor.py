@@ -6,7 +6,7 @@ import logfire
 from pydantic import Field, BaseModel, computed_field
 
 
-class DownloadProcessor(BaseModel):
+class TDLManager(BaseModel):
     func: str = Field(
         default="download",
         description="The function to run",
@@ -66,7 +66,7 @@ class DownloadProcessor(BaseModel):
         if url:
             _command.extend(["--url", url])
         try:
-            result = subprocess.run(
+            result = subprocess.run(  # noqa: S603
                 _command,
                 check=True,
                 capture_output=True,
