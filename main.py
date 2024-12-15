@@ -1,12 +1,21 @@
 import logfire
+from pydantic import Field, AliasChoices
 from telegram import Update
 from rich.console import Console
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
-from src.types.config import Config
+from pydantic_settings import BaseSettings
 from src.utils.processor import TDLManager
 
 logfire.configure(send_to_logfire=False)
 console = Console()
+
+
+class Config(BaseSettings):
+    telegram_token: str = Field(
+        ..., validation_alias=AliasChoices("TELEGRAM_TOKEN", "TOKEN", "token")
+    )
+
+
 config = Config()
 
 
