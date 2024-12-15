@@ -1,10 +1,15 @@
-site_name: Task Management Assistant
-site_url: https://mai0313.github.io/tdl-bot/
+site_name: Telegram Downloader
+site_url: https://mai0313.github.io/tdl/
 site_author: Wei Cheng Lee
 
-repo_name: Mai0313/tdl-bot
-repo_url: https://github.com/Mai0313/tdl-bot
+repo_name: Mai0313/tdl
+repo_url: https://github.com/Mai0313/tdl
 edit_uri: edit/master/docs/
+
+docs_dir: docs
+site_dir: site
+remote_branch: wiki
+dev_addr: 0.0.0.0:9987
 
 theme:
   name: material
@@ -63,6 +68,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
+          paths: [.]
           options:
             extensions:
             - griffe_typingdoc
@@ -95,6 +101,7 @@ plugins:
             members_order: source  # source or alphabetical
             filters:
               - "!^_"
+              - "!^model_"
             group_by_category: true
             show_submodules: true
             summary:
@@ -109,9 +116,10 @@ plugins:
             # See https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html for more info.
             docstring_section_style: table
             merge_init_into_class: true
+            relative_crossrefs: true
             ignore_init_summary: true
             trim_doctest_flags: true
-            show_if_no_docstring: false
+            show_if_no_docstring: true
             show_docstring_attributes: true
             show_docstring_functions: true
             show_docstring_classes: true
@@ -140,7 +148,7 @@ plugins:
 extra:
   social:
   - icon: fontawesome/brands/github-alt
-    link: https://gitea.mediatek.inc/Mai0313/tdl-bot
+    link: https://github.com/Mai0313/tdl
 
   alternate:
   - link: /
@@ -162,3 +170,10 @@ markdown_extensions:
   - footnotes
   - md_in_html
   - tables
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

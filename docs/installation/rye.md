@@ -8,8 +8,8 @@
 
 ```bash
 # clone project
-git clone https://github.com/Mai0313/repo-template
-mv repo-template your-repo-name
+git clone https://github.com/Mai0313/tdl
+mv tdl your-repo-name
 
 # change directory
 cd your-repo-name
