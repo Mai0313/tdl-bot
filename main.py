@@ -35,8 +35,8 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         post_chatname: str = update.message.api_kwargs["forward_from_chat"]["title"]
         # >>> Output: 晚间休息室🔞
 
-        output_path = f"./downloads/{post_chatname}"
-        output_path = Path(output_path)
+        output_path_ = f"./downloads/{post_chatname}"
+        output_path = Path(output_path_)
 
         file_url = f"https://t.me/{post_sender}/{post_id}"
 
@@ -52,7 +52,9 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             async with httpx.AsyncClient() as client:
                 response = await client.get(url=file_url)
                 response.json()
-                async with await anyio.open_file(f"{output_path.as_posix()}/{post_id}.jpg", "wb") as file:
+                async with await anyio.open_file(
+                    f"{output_path.as_posix()}/{post_id}.jpg", "wb"
+                ) as file:
                     await file.write(response.content)
     else:
         if update.message.text.startswith("https://t.me/"):
