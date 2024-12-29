@@ -8,7 +8,7 @@ from tdl.processor import TDLManager
 def tdl_download(file_url: str) -> str:
     file_urls = file_url.split("\n")
     for file_url in file_urls:
-        td = TDLManager(func="download", serve=False, skip_same=True, limit=4, pool=0, threads=8)
+        td = TDLManager(output_path="./data/tmp")
         td.run(url=file_url)
     output_path = Path("downloads")
     downloaded = (

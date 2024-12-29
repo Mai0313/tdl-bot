@@ -1,9 +1,12 @@
 from pathlib import Path
 
 import pandas as pd
+import logfire
 from pydantic_settings import BaseSettings
 
 from tdl.processor import TDLManager
+
+logfire.configure()
 
 
 class TelegramDownloader(BaseSettings):
@@ -18,16 +21,13 @@ class TelegramDownloader(BaseSettings):
         return urls
 
     def get_videos(self, urls: list[str]) -> None:
-        tdl = TDLManager(
-            func="download",
-            serve=False,
-            skip_same=True,
-            limit=4,
-            pool=0,
-            threads=8,
-            output_path="./data/tmp",
-        )
-        tdl.run(urls=urls)
+        tdl = TDLManager(output_path="./data/tmp")
+        try:
+            tdl.download(urls=urls)
+        except Exception:
+            logfire.info("You need to login to your Telegram account")
+            tdl.login()
+            tdl.download(urls=urls)
 
 
 if __name__ == "__main__":

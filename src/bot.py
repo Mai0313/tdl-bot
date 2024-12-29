@@ -39,7 +39,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         # 聊天室名稱當資料夾名稱
         post_chatname: str = update.message.api_kwargs["forward_from_chat"]["title"]
         # >>> Output: 晚间休息室🔞
-        output_path = Path(f"./downloads/{post_chatname}")
+        output_path = Path(f"./data/tmp/{post_chatname}")
 
         if update.message.video:
             video_filename_ = update.message.video.file_name
@@ -76,16 +76,8 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             logfire.info("Received a text message", text=update.message.text)
             return await update.message.reply_text("好色喔 但你不會用對吧 嘿嘿")
     logfire.info("Message Details", post_id=post_id, post_sender=post_sender, url=file_url)
-    td = TDLManager(
-        func="download",
-        serve=False,
-        skip_same=True,
-        limit=4,
-        pool=0,
-        threads=8,
-        output_path=output_path,
-    )
-    td.run(url=file_url)
+    td = TDLManager(output_path=output_path)
+    td.download(url=file_url)
     return await update.message.reply_text(
         f"下載完成!\nFile URL: {file_url}\nFolder: {output_path.as_posix()}"
     )

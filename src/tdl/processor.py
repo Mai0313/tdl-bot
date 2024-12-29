@@ -9,31 +9,8 @@ logfire.configure(send_to_logfire=False)
 
 
 class TDLManager(BaseModel):
-    func: str = Field(
-        default="download",
-        description="The function to run",
-        examples=["download"],
-        pattern="download",
-        # pattern="backup|login|migrate|recover|chat|download|forward|upload|completion|help|version",
-    )
-    serve: bool = Field(
-        default=False, description="Serve the file instead of downloading it, same with `--serve`."
-    )
-    skip_same: bool = Field(
-        default=False,
-        description="Skip downloading if the file already exists; same with `--skip-same`.",
-    )
-    limit: int = Field(
-        default=2, description="The number of files to download; same with `--limit`."
-    )
-    pool: int = Field(
-        default=0, description="The number of concurrent downloads; same with `--pool`."
-    )
-    threads: int = Field(
-        default=4, description="The number of threads to use; same with `--threads`."
-    )
     output_path: Path = Field(
-        default=Path("./downloads"),
+        default=Path("./data/tmp"),
         description="The output directory for the downloaded files; same with `--dir`.",
     )
 
@@ -50,44 +27,42 @@ class TDLManager(BaseModel):
         if platform.system() == "Windows":
             tdl = "./src/tdl/binaries/tdl.exe"
 
-        if platform.system() == "Linux":
+        elif platform.system() == "Linux":
             system_path = Path("./src/tdl/binaries/tdl").expanduser()
             if system_path.exists():
                 tdl = "tdl"
         return tdl
 
-    @computed_field
-    @property
-    def compiled_command(self) -> list[str]:
-        base_command = [self.tdl, self.func, "--dir", self.output_path.as_posix()]
-        if self.serve:
-            base_command.append("--serve")
-        if self.skip_same:
-            base_command.append("--skip-same")
-        if self.limit:
-            base_command.extend(["--limit", str(self.limit)])
-        if self.pool:
-            base_command.extend(["--pool", str(self.pool)])
-        if self.threads:
-            base_command.extend(["--threads", str(self.threads)])
-        return base_command
-
-    def download(self, urls: list[str]) -> None:
-        _command = self.compiled_command
-        url = ",".join(urls)
-        if url:
-            _command.extend(["--url", url])
+    def login(self) -> None:
+        if platform.system() == "Windows":
+            command = [self.tdl, "login", "--type", "desktop"]
+        else:
+            command = [self.tdl, "login", "--type", "qr"]
         try:
             result = subprocess.run(  # noqa: S603
-                _command,
+                command,
                 check=True,
                 capture_output=True,
                 text=True,
-                shell=isinstance(_command, str),
+                encoding="utf-8",
+                shell=isinstance(command, str),
             )
-            logfire.info(f"Command Output:\n{result.stdout}")
+            logfire.info(f"Command Output:\n{result.stdout}", status_code=result.returncode)
         except subprocess.CalledProcessError as e:
-            logfire.error("Error:", error=e.stderr, command=_command, _exc_info=True)
+            logfire.error("Error:", error=e.stderr, command=command, _exc_info=True)
 
-    def run(self, urls: list[str]) -> None:
-        self.download(urls=urls)
+    def download(self, urls: list[str]) -> None:
+        url_string = ",".join(urls)
+        command = [self.tdl, "download", "--dir", self.output_path.as_posix(), "--url", url_string]
+        try:
+            result = subprocess.run(  # noqa: S603
+                command,
+                check=True,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                shell=isinstance(command, str),
+            )
+            logfire.info(f"Command Output:\n{result.stdout}", status_code=result.returncode)
+        except subprocess.CalledProcessError as e:
+            logfire.error("Error:", error=e.stderr, command=command, _exc_info=True)
