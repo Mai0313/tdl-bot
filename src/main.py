@@ -24,10 +24,11 @@ class TelegramDownloader(BaseSettings):
         tdl = TDLManager(output_path="./data/tmp")
         try:
             tdl.download(urls=urls)
-        except Exception:
-            logfire.info("You need to login to your Telegram account")
-            tdl.login()
-            tdl.download(urls=urls)
+        except RuntimeError:
+            logfire.info("You need to login to your Telegram account.")
+            logfire.info("Please run `tdl login` in first.")
+            # tdl.login()
+            # tdl.download(urls=urls)
 
 
 if __name__ == "__main__":
