@@ -32,7 +32,7 @@ class TDLManager(BaseModel):
     threads: int = Field(
         default=4, description="The number of threads to use; same with `--threads`."
     )
-    output_dir: str = Field(
+    output_path: str = Field(
         default="./downloads",
         description="The output directory for the downloaded files; same with `--dir`.",
     )
@@ -54,7 +54,7 @@ class TDLManager(BaseModel):
     @computed_field
     @property
     def compiled_command(self) -> list[str]:
-        base_command = [self.tdl, self.func, "--dir", self.output_dir]
+        base_command = [self.tdl, self.func, "--dir", self.output_path]
         if self.serve:
             base_command.append("--serve")
         if self.skip_same:
