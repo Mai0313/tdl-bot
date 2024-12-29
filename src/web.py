@@ -1,7 +1,8 @@
 from pathlib import Path
 
 import gradio as gr
-from src.tdl.processor import TDLManager
+
+from tdl.processor import TDLManager
 
 
 def tdl_download(file_url: str) -> str:

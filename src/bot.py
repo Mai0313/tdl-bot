@@ -8,7 +8,8 @@ from pydantic import Field, AliasChoices
 from telegram import Bot, Update, PhotoSize
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
 from pydantic_settings import BaseSettings
-from src.tdl.processor import TDLManager
+
+from tdl.processor import TDLManager
 
 logfire.configure(send_to_logfire=False)
 
