@@ -67,8 +67,9 @@ class TDLManager(BaseModel):
             base_command.extend(["--threads", str(self.threads)])
         return base_command
 
-    def run(self, url: str) -> None:
+    def run(self, urls: list[str]) -> None:
         _command = self.compiled_command
+        url = ",".join(urls)
         if url:
             _command.extend(["--url", url])
         try:
