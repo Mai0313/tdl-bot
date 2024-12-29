@@ -2,6 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 import logfire
+from pydantic import Field
 from pydantic_settings import BaseSettings
 
 from tdl.processor import TDLManager
@@ -10,7 +11,7 @@ logfire.configure()
 
 
 class TelegramDownloader(BaseSettings):
-    path: Path
+    path: Path = Field(default="./data/example.csv")
 
     def get_urls(self) -> list[str]:
         try:
@@ -30,8 +31,12 @@ class TelegramDownloader(BaseSettings):
             # tdl.login()
             # tdl.download(urls=urls)
 
+    def __call__(self) -> None:
+        urls = self.get_urls()
+        self.get_videos(urls)
+
 
 if __name__ == "__main__":
-    td = TelegramDownloader(path="./data/example.xlsx")
-    urls = td.get_urls()
-    td.get_videos(urls)
+    import fire
+
+    fire.Fire(TelegramDownloader)
