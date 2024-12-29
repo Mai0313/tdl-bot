@@ -3,7 +3,7 @@ import platform
 import subprocess
 
 import logfire
-from pydantic import Field, BaseModel, computed_field
+from pydantic import Field, BaseModel, computed_field, model_validator
 
 logfire.configure(send_to_logfire=False)
 
@@ -32,10 +32,15 @@ class TDLManager(BaseModel):
     threads: int = Field(
         default=4, description="The number of threads to use; same with `--threads`."
     )
-    output_path: str = Field(
-        default="./downloads",
+    output_path: Path = Field(
+        default=Path("./downloads"),
         description="The output directory for the downloaded files; same with `--dir`.",
     )
+
+    @model_validator(mode="after")
+    def _setup(self) -> "TDLManager":
+        self.output_path.mkdir(parents=True, exist_ok=True)
+        return self
 
     @computed_field
     @property
@@ -54,7 +59,7 @@ class TDLManager(BaseModel):
     @computed_field
     @property
     def compiled_command(self) -> list[str]:
-        base_command = [self.tdl, self.func, "--dir", self.output_path]
+        base_command = [self.tdl, self.func, "--dir", self.output_path.as_posix()]
         if self.serve:
             base_command.append("--serve")
         if self.skip_same:
@@ -67,7 +72,7 @@ class TDLManager(BaseModel):
             base_command.extend(["--threads", str(self.threads)])
         return base_command
 
-    def run(self, urls: list[str]) -> None:
+    def download(self, urls: list[str]) -> None:
         _command = self.compiled_command
         url = ",".join(urls)
         if url:
@@ -83,3 +88,6 @@ class TDLManager(BaseModel):
             logfire.info(f"Command Output:\n{result.stdout}")
         except subprocess.CalledProcessError as e:
             logfire.error("Error:", error=e.stderr, command=_command, _exc_info=True)
+
+    def run(self, urls: list[str]) -> None:
+        self.download(urls=urls)

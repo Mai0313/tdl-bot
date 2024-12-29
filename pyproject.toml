@@ -73,6 +73,7 @@ dependencies = [
     "pydantic-settings>=2.5.2",
     "gradio<=5.9.0",
     "pandas>=2.2.3",
+    "openpyxl>=3.1.5",
 ]
 dynamic = ["readme"]
 readme = "README.md"
