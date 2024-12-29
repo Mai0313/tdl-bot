@@ -22,6 +22,8 @@ class Config(BaseSettings):
 
 config = Config()
 
+OUTPUT = "./data/tmp"
+
 
 async def handle_message(update: Update, context: CallbackContext) -> None:
     if update.message.photo or update.message.video:
@@ -39,7 +41,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         # 聊天室名稱當資料夾名稱
         post_chatname: str = update.message.api_kwargs["forward_from_chat"]["title"]
         # >>> Output: 晚间休息室🔞
-        output_path = Path(f"./data/tmp/{post_chatname}")
+        output_path = Path(f"{OUTPUT}/{post_chatname}")
 
         if update.message.video:
             video_filename_ = update.message.video.file_name
@@ -72,7 +74,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             post_id = update.message.text.split("/")[-1]
             post_sender = update.message.text.split("/")[-2]
             file_url = update.message.text
-            output_path = Path(f"./data/tmp/{post_sender}_{post_id}")
+            output_path = Path(f"{OUTPUT}/{post_sender}_{post_id}")
         else:
             logfire.info("Received a text message", text=update.message.text)
             return await update.message.reply_text("好色喔 但你不會用對吧 嘿嘿")
