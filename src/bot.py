@@ -72,12 +72,13 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             post_id = update.message.text.split("/")[-1]
             post_sender = update.message.text.split("/")[-2]
             file_url = update.message.text
+            output_path = Path(f"./data/tmp/{post_sender}_{post_id}")
         else:
             logfire.info("Received a text message", text=update.message.text)
             return await update.message.reply_text("好色喔 但你不會用對吧 嘿嘿")
     logfire.info("Message Details", post_id=post_id, post_sender=post_sender, url=file_url)
     td = TDLManager(output_path=output_path)
-    td.download(url=file_url)
+    td.download(urls=[file_url])
     return await update.message.reply_text(
         f"下載完成!\nFile URL: {file_url}\nFolder: {output_path.as_posix()}"
     )
