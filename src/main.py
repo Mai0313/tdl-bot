@@ -29,9 +29,9 @@ class TelegramDownloader(BaseModel):
         examples=["./data/example.csv", "./data/example.txt", "./data/example.xlsx"],
     )
 
-    def get_urls(self) -> list[str]:
+    async def get_urls(self) -> list[str]:
         if not self.path:
-            input_path = console.input("Please provide the path to the CSV or Excel file: ")
+            input_path = console.input("[bold yellow]請輸入檔案路徑: [/bold yellow]")
         else:
             input_path = self.path
         filepath = Path(input_path)
@@ -54,9 +54,9 @@ class TelegramDownloader(BaseModel):
         await asyncio.sleep(secrets.randbelow(3))
         return url_name_dict
 
-    def get_videos(self) -> None:
+    async def get_videos(self) -> None:
         tdl = TDLManager(output_path="./data/tmp")
-        urls = self.get_urls()
+        urls = await self.get_urls()
         try:
             tdl.download(urls=urls)
         except RuntimeError:
@@ -66,7 +66,7 @@ class TelegramDownloader(BaseModel):
             # tdl.download(urls=urls)
 
     async def get_names(self) -> list[TitleParser]:
-        urls = self.get_urls()
+        urls = await self.get_urls()
         semaphore = asyncio.Semaphore(5)  # 控制同時執行的任務數量
         results = []
 
@@ -88,6 +88,18 @@ class TelegramDownloader(BaseModel):
 
 
 if __name__ == "__main__":
-    import fire
+    console.print("[bold cyan]請選擇功能：[/bold cyan]")
+    console.print("1. 獲取名稱 (get_names)")
+    console.print("2. 下載影片 (get_videos)")
+    choice = console.input("[bold green]請輸入數字選擇功能 (1 或 2): [/bold green]")
 
-    fire.Fire(TelegramDownloader)
+    path = console.input("[bold yellow]請輸入檔案路徑: [/bold yellow]").strip() or None
+
+    manager = TelegramDownloader(path=path)
+
+    if choice == "1":
+        asyncio.run(manager.get_names())
+    elif choice == "2":
+        asyncio.run(manager.get_videos())
+    else:
+        console.print("[bold red]無效的選擇，請重新運行程式。[/bold red]")
