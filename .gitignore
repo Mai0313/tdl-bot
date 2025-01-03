@@ -162,3 +162,5 @@ cython_debug/
 /data/tmp/
 
 /.github/reports/
+/docs/Reference/
+/docs/Scripts/

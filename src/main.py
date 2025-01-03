@@ -2,22 +2,22 @@ from pathlib import Path
 
 import pandas as pd
 import logfire
-from pydantic import Field
-from pydantic_settings import BaseSettings
+from pydantic import Field, BaseModel
 
 from tdl.processor import TDLManager
 
 logfire.configure()
 
 
-class TelegramDownloader(BaseSettings):
-    path: Path = Field(default="./data/example.csv")
+class TelegramDownloader(BaseModel):
+    path: str = Field(default="./data/example.csv")
 
     def get_urls(self) -> list[str]:
+        path = Path(self.path)
         try:
-            data = pd.read_csv(self.path.as_posix())
+            data = pd.read_csv(path.as_posix())
         except UnicodeDecodeError:
-            data = pd.read_excel(self.path.as_posix())
+            data = pd.read_excel(path.as_posix())
         urls = data["url"].to_numpy().tolist()
         return urls
 
