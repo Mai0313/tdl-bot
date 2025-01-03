@@ -75,7 +75,6 @@ class TelegramDownloader(BaseModel):
                 return await self._get_names(url)
 
         with Progress() as progress:
-            # 添加進度條
             task_id = progress.add_task("[cyan]Fetching URLs...", total=len(urls))
 
             async def wrapped_task(url: str) -> TitleParser:
@@ -83,7 +82,6 @@ class TelegramDownloader(BaseModel):
                 progress.update(task_id, advance=1, description=result.title)
                 return result
 
-            # gather 所有任務
             results = await asyncio.gather(*(wrapped_task(url) for url in urls))
 
         return results
