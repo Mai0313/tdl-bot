@@ -40,7 +40,6 @@ exceptiongroup==1.2.2 ; python_full_version < '3.11'
     # via anyio
 executing==2.1.0
     # via logfire
-fake-useragent==2.0.3
 fastapi==0.115.6
     # via gradio
 ffmpy==0.4.0
