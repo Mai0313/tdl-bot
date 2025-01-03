@@ -38,14 +38,14 @@ jobs:
           # http_proxy: ${{ secrets.HTTP_PROXY }} # Optional
           # https_proxy: ${{ secrets.HTTPS_PROXY }} # Optional
 
-      - name: Install dependencies
-        run: |
-          rye sync
+      # - name: Install dependencies
+      #   run: |
+      #     rye sync
 
-      - name: Packaging to Executable file
-        run: |
-          rye install pyinstaller
-          pyinstaller -F main.py --onefile -n ${{ github.event.repository.name }}
+      # - name: Packaging to Executable file
+      #   run: |
+      #     rye install pyinstaller
+      #     pyinstaller -F main.py --onefile -n ${{ github.event.repository.name }}
 
       - name: Move and Rename
         shell: pwsh
