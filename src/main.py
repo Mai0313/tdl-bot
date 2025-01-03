@@ -83,7 +83,15 @@ class TelegramDownloader(BaseModel):
                 return result
 
             results = await asyncio.gather(*(wrapped_task(url) for url in urls))
-
+        data = pd.DataFrame([result.model_dump() for result in results])
+        if self.path is None:
+            raise ValueError("Path is not provided.")
+        if self.path.endswith(".csv"):
+            data.to_csv(self.path, index=False)
+        elif self.path.endswith(".xlsx"):
+            data.to_excel(self.path, index=False)
+        else:
+            console.print(data)
         return results
 
 
@@ -94,6 +102,15 @@ if __name__ == "__main__":
     choice = console.input("[bold green]請輸入數字選擇功能 (1 或 2): [/bold green]")
 
     path = console.input("[bold yellow]請輸入檔案路徑: [/bold yellow]").strip() or None
+    if path is None:
+        if choice == "1":
+            path = "./data/url.xlsx"
+        elif choice == "2":
+            path = "./data/example.xlsx"
+        else:
+            console.print("[bold red]無效的選擇，請重新運行程式。[/bold red]")
+            exit(1)
+        console.print(f"[bold red]正在使用預設文件: {path}[/bold red]")
     path = path.replace('"', "").replace("'", "")
 
     manager = TelegramDownloader(path=path)
