@@ -120,11 +120,11 @@ protobuf==5.29.1
     # via googleapis-common-protos
     # via logfire
     # via opentelemetry-proto
-pydantic==2.10.3
+pydantic==2.10.4
     # via fastapi
     # via gradio
     # via pydantic-settings
-pydantic-core==2.27.1
+pydantic-core==2.27.2
     # via pydantic
 pydantic-settings==2.7.0
 pydub==0.25.1

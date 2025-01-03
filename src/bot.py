@@ -16,7 +16,10 @@ logfire.configure(send_to_logfire=False)
 
 class Config(BaseSettings):
     telegram_token: str = Field(
-        ..., validation_alias=AliasChoices("TELEGRAM_TOKEN", "TOKEN", "token")
+        ...,
+        title="Telegram Bot Token",
+        description="Telegram Bot token from BotFather `https://telegram.me/BotFather`",
+        validation_alias=AliasChoices("TELEGRAM_TOKEN", "TOKEN", "token"),
     )
 
 
