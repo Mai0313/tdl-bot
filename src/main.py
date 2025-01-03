@@ -21,8 +21,10 @@ class TelegramDownloader(BaseModel):
 
     def get_urls(self) -> list[str]:
         if not self.path:
-            self.path = console.input("Please provide the path to the CSV or Excel file: ")
-        filepath = Path(self.path)
+            input_path = console.input("Please provide the path to the CSV or Excel file: ")
+        else:
+            input_path = self.path
+        filepath = Path(input_path)
         try:
             data = pd.read_csv(filepath.as_posix())
         except UnicodeDecodeError:
