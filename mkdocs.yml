@@ -1,9 +1,9 @@
 site_name: Telegram Downloader
-site_url: https://mai0313.github.io/tdl/
+site_url: https://mai0313.github.io/tdl-bot/
 site_author: Wei Cheng Lee
 
-repo_name: Mai0313/tdl
-repo_url: https://github.com/Mai0313/tdl
+repo_name: Mai0313/tdl-bot
+repo_url: https://github.com/Mai0313/tdl-bot
 edit_uri: edit/master/docs/
 
 docs_dir: docs
@@ -148,7 +148,7 @@ plugins:
 extra:
   social:
   - icon: fontawesome/brands/github-alt
-    link: https://github.com/Mai0313/tdl
+    link: https://github.com/Mai0313/tdl-bot
 
   alternate:
   - link: /

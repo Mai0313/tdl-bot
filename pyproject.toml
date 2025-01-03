@@ -59,7 +59,7 @@ omit = ["./src/ameba/*"]
 # ================== #
 
 [project]
-name = "tdl"
+name = "tdl-bot"
 version = "1.0.0"
 description = "Telegram Downloader"
 authors = [
@@ -81,8 +81,8 @@ requires-python = ">= 3.10"
 license = { text = "MIT" }
 
 [project.urls]
-Homepage = "https://github.com/Mai0313/tdl"
-Repository = "https://github.com/Mai0313/tdl"
+Homepage = "https://github.com/Mai0313/tdl-bot"
+Repository = "https://github.com/Mai0313/tdl-bot"
 
 [tool.rye.scripts]
 
@@ -127,7 +127,6 @@ managed = true
 virtual = true
 universal = true
 dev-dependencies = [
-    "notebook>=7.3.1",
     "ipykernel>=6.29.5",
     "ipywidgets>=8.1.5",
     "pre-commit>=4.0.1",
@@ -136,10 +135,11 @@ dev-dependencies = [
     "pytest-xdist>=3.6.1",
     "pytest-asyncio==0.23.8",
     "genbadge[all]>=1.1.1",
-    "mkdocs-material>=9.5.47",
-    "mkdocstrings-python>=1.12.2",
     "fire>=0.7.0",
     "rich>=13.9.4",
+    "anyio>=4.7.0",
+    "mkdocstrings-python>=1.13.0",
+    "mkdocs-material>=9.5.49",
     "griffe-typingdoc>=0.2.7",
 ]
 
@@ -156,7 +156,7 @@ include = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/tdl"]
+packages = ["src/*"]
 
 [tool.hatch.build.targets.sdist]
 # Basically everything except hidden files/directories (such as .github, .devcontainers, .python-version, etc)
@@ -316,7 +316,6 @@ select = [
     # "G",  # flake8-logging-format
     "INP",  # flake8-no-pep420
     # "PIE",  # flake8-pie
-    "T20",  # Remove Print Out
     "T20",  # flake8-print
     "PYI",  # flake8-pyi
     "PT",  # flake8-pytest-style
@@ -327,7 +326,7 @@ select = [
     "SLOT",  # flake8-slots
     "SIM",  # flake8-simplify
     "TID",  # flake8-tidy-imports
-    "TCH",  # flake8-type-checking
+    "TC",  # flake8-type-checking
     "INT",  # flake8-gettext
     # "ARG",  # flake8-unused-arguments
     # "PTH",  # flake8-use-pathlib
@@ -464,7 +463,7 @@ skip-magic-trailing-comma = true
 [tool.logfire]
 send_to_logfire = false
 token = false
-project_name = "tdl"
+project_name = "tdl-bot"
 trace_sample_rate = 1.0
 console_colors = "auto"
 console_span_style = "show-parents"
