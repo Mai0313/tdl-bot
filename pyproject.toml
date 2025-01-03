@@ -76,7 +76,7 @@ dependencies = [
     "beautifulsoup4>=4.12.3",
     "rich>=13.9.4",
 ]
-dynamic = ["readme"]
+# dynamic = ["readme"]
 readme = "README.md"
 requires-python = ">= 3.10"
 license = { text = "MIT" }
