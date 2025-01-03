@@ -94,6 +94,7 @@ if __name__ == "__main__":
     choice = console.input("[bold green]請輸入數字選擇功能 (1 或 2): [/bold green]")
 
     path = console.input("[bold yellow]請輸入檔案路徑: [/bold yellow]").strip() or None
+    path = path.replace('"', "").replace("'", "")
 
     manager = TelegramDownloader(path=path)
 
