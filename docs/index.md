@@ -12,6 +12,7 @@
 [![codecov](https://codecov.io/gh/Mai0313/tdl-bot/branch/master/graph/badge.svg)](https://codecov.io/gh/Mai0313/tdl-bot)
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/tdl-bot/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/tdl-bot/pulls)
+[![contributors](https://img.shields.io/github/contributors/Mai0313/tdl-bot.svg)](https://github.com/Mai0313/tdl-bot/graphs/contributors)
 
 </center>
 

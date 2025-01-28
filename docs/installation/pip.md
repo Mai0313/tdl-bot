@@ -2,8 +2,8 @@
 
 ```bash
 # clone project
-git clone https://github.com/Mai0313/tdl
-mv tdl your-repo-name
+git clone https://github.com/Mai0313/tdl-bot
+mv tdl-bot your-repo-name
 
 # change directory
 cd your-repo-name
