@@ -24,27 +24,14 @@ class TelegramDownloader(BaseModel):
     @computed_field
     @property
     def tdl(self) -> str:
-        tdl = "./src/tdl/binaries/tdl"
-
+        tdl = Path("./src/core/binaries/tdl").expanduser()
         if platform.system() == "Windows":
-            tdl = "./src/tdl/binaries/tdl.exe"
+            tdl = Path("./src/core/binaries/tdl.exe").expanduser()
+        return tdl.absolute().as_posix()
 
-        elif platform.system() == "Linux":
-            system_path = Path("./src/tdl/binaries/tdl").expanduser()
-            if system_path.exists():
-                tdl = "tdl"
-        return tdl
-
-    def download(self, urls: list[str]) -> None:
-        url_string = ",".join(urls)
-        command = [
-            self.tdl,
-            "download",
-            "--dir",
-            self.output_folder.as_posix(),
-            "--url",
-            url_string,
-        ]
+    def download(self, urls: list[str] | str) -> None:
+        urls = ",".join(urls) if isinstance(urls, list) else urls
+        command = [self.tdl, "download", "--dir", self.output_folder.as_posix(), "--url", urls]
 
         try:
             with subprocess.Popen(  # noqa: S603
