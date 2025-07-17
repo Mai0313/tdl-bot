@@ -1,20 +1,11 @@
-import re
 from pathlib import Path
 import platform
 import subprocess
 
 import logfire
 from pydantic import Field, BaseModel, computed_field, model_validator
-from rich.console import Console
 
 logfire.configure(send_to_logfire=False)
-console = Console()
-
-ANSI_ESCAPE = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
-
-
-def strip_ansi(text: str) -> str:
-    return ANSI_ESCAPE.sub("", text)
 
 
 class TelegramDownloader(BaseModel):
