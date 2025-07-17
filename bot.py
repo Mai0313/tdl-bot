@@ -49,9 +49,9 @@ class BatchDownloadManager:
         """Initialize batch download manager with fixed settings."""
         self.batch_size = 20  # Fixed batch size
         self.batch_timeout = 3.0  # Fixed timeout in seconds
-        self.download_queue: deque[DownloadTask] = deque()
+        self.download_queue: deque[DownloadTask] = deque()  # type: ignore[annotation-unchecked]
         self.processing = False
-        self._batch_task: asyncio.Task | None = None
+        self._batch_task: asyncio.Task | None = None  # type: ignore[annotation-unchecked]
         self._new_task_event = asyncio.Event()
 
     def _escape_markdown(self, text: str) -> str:
@@ -302,7 +302,7 @@ class BatchDownloadManager:
         logfire.info("Starting batch download", urls=urls, output_folder=output_folder.as_posix())
 
         td = TelegramDownloader(output_folder=output_folder)
-        td.download(urls=urls)
+        await td.download(urls=urls)
 
     async def _update_completion_messages(
         self, tasks: list[DownloadTask], urls: list[str], output_dir: str, remaining_groups: int
@@ -528,7 +528,7 @@ class TelegramBot:
             )
 
             td = TelegramDownloader(output_folder=output_folder)
-            td.download(urls=[message_info.file_url])
+            await td.download(urls=[message_info.file_url])
 
             success_msg = (
                 f"✅ 下載完成!\n"
