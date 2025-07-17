@@ -298,10 +298,10 @@ class BatchDownloadManager:
             output_dir (str): Directory to download files to
             urls (List[str]): URLs to download
         """
-        output_path = Path(output_dir)
-        logfire.info("Starting batch download", urls=urls, output_path=output_path.as_posix())
+        output_folder = Path(output_dir)
+        logfire.info("Starting batch download", urls=urls, output_folder=output_folder.as_posix())
 
-        td = TelegramDownloader(output_path=output_path)
+        td = TelegramDownloader(output_folder=output_folder)
         td.download(urls=urls)
 
     async def _update_completion_messages(
@@ -316,10 +316,10 @@ class BatchDownloadManager:
             remaining_groups (int): Number of remaining groups
         """
         primary_task = tasks[-1]
-        output_path = Path(output_dir)
+        output_folder = Path(output_dir)
 
         # Create formatted success message
-        success_msg = self._create_success_message(urls, output_path, remaining_groups)
+        success_msg = self._create_success_message(urls, output_folder, remaining_groups)
 
         # Update primary task message
         await self._update_task_message(primary_task, success_msg)
@@ -336,26 +336,26 @@ class BatchDownloadManager:
         logfire.info("Batch download completed successfully", batch_size=len(urls))
 
     def _create_success_message(
-        self, urls: list[str], output_path: Path, remaining_groups: int
+        self, urls: list[str], output_folder: Path, remaining_groups: int
     ) -> str:
         """Create a formatted success message.
 
         Args:
             urls (List[str]): URLs that were downloaded
-            output_path (Path): Path where files were downloaded
+            output_folder (Path): Path where files were downloaded
             remaining_groups (int): Number of remaining groups
 
         Returns:
             str: Formatted success message
         """
         if len(urls) == 1:
-            escaped_path = self._escape_markdown(output_path.as_posix())
+            escaped_path = self._escape_markdown(output_folder.as_posix())
             escaped_url = self._escape_markdown(urls[0])
             success_msg = (
                 f"✅ *下載完成\\!*\n\n📁 *資料夾*: `{escaped_path}`\n\n🔗 *來源*: {escaped_url}"
             )
         else:
-            escaped_path = self._escape_markdown(output_path.as_posix())
+            escaped_path = self._escape_markdown(output_folder.as_posix())
             url_list = "\n".join([f"• {self._escape_markdown(url)}" for url in urls])
             success_msg = (
                 f"✅ *批量下載完成\\!*\n\n"
@@ -518,21 +518,21 @@ class TelegramBot:
             Tuple[bool, str]: Success status and message
         """
         try:
-            output_path = Path(f"./data/{message_info.post_chatname}")
+            output_folder = Path(f"./data/{message_info.post_chatname}")
             logfire.info(
                 "Starting download",
                 post_id=message_info.post_id,
                 post_sender=message_info.post_sender,
                 url=message_info.file_url,
-                output_path=output_path.as_posix(),
+                output_folder=output_folder.as_posix(),
             )
 
-            td = TelegramDownloader(output_path=output_path)
+            td = TelegramDownloader(output_folder=output_folder)
             td.download(urls=[message_info.file_url])
 
             success_msg = (
                 f"✅ 下載完成!\n"
-                f"📁 資料夾: {output_path.as_posix()}\n"
+                f"📁 資料夾: {output_folder.as_posix()}\n"
                 f"🔗 來源: {message_info.file_url}"
             )
             logfire.info("Download completed successfully")

@@ -9,7 +9,7 @@ logfire.configure(send_to_logfire=False)
 
 
 class TelegramDownloader(BaseModel):
-    output_path: Path = Field(
+    output_folder: Path = Field(
         ...,
         description="The output directory for the downloaded files; same with `--dir`.",
         frozen=False,
@@ -18,7 +18,7 @@ class TelegramDownloader(BaseModel):
 
     @model_validator(mode="after")
     def _setup(self) -> "TelegramDownloader":
-        self.output_path.mkdir(parents=True, exist_ok=True)
+        self.output_folder.mkdir(parents=True, exist_ok=True)
         return self
 
     @computed_field
@@ -37,7 +37,14 @@ class TelegramDownloader(BaseModel):
 
     def download(self, urls: list[str]) -> None:
         url_string = ",".join(urls)
-        command = [self.tdl, "download", "--dir", self.output_path.as_posix(), "--url", url_string]
+        command = [
+            self.tdl,
+            "download",
+            "--dir",
+            self.output_folder.as_posix(),
+            "--url",
+            url_string,
+        ]
 
         try:
             with subprocess.Popen(  # noqa: S603
