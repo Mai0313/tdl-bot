@@ -3,14 +3,17 @@ services:
     image: ghcr.io/mai0313/tdl-bot
     build:
       context: .
-      target: prod
       dockerfile: ./docker/Dockerfile
+      target: prod
     env_file:
       - .env
     volumes:
       - ./data:/app/data
     command:
-      - python
-      - ./bot.py
+      - uv
+      - run
+      - --no-dev
+      - --frozen
+      - tdl_bot
     restart: always
     pull_policy: always
