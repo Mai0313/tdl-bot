@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import StrEnum
 import asyncio
 from pathlib import Path
 from datetime import timedelta
@@ -10,7 +10,7 @@ from pydantic import Field, BaseModel, computed_field, model_validator
 logfire.configure(send_to_logfire=False)
 
 
-class StorageDriver(str, Enum):
+class StorageDriver(StrEnum):
     """Available storage drivers for TDL."""
 
     LEGACY = "legacy"
@@ -18,7 +18,7 @@ class StorageDriver(str, Enum):
     FILE = "file"
 
 
-class TDLCommand(str, Enum):
+class TDLCommand(StrEnum):
     """Available TDL commands."""
 
     # Account related
@@ -146,7 +146,7 @@ class TelegramDownloader(BaseModel):
                 command=command,
             )
 
-        except asyncio.TimeoutError:
+        except TimeoutError:
             logfire.error(f"Command timed out: {' '.join(command)}")
             return TDLResult(
                 success=False, return_code=-1, stderr="Command timed out", command=command

@@ -148,7 +148,7 @@ class BatchDownloadManager:
                         # No more tasks, wait for new ones using Event
                         try:
                             await asyncio.wait_for(self._wait_for_new_tasks(), timeout=1.0)
-                        except asyncio.TimeoutError:
+                        except TimeoutError:
                             break
                     else:
                         # Add more tasks to current batch

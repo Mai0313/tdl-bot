@@ -8,7 +8,7 @@ from telethon.tl.types import User
 from telethon.tl.patched import Message
 from telethon.tl.custom.dialog import Dialog
 
-from utils.config import Config
+from .utils.config import Config
 
 logfire.configure(send_to_logfire=False)
 
