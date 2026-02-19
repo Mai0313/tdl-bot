@@ -3,6 +3,7 @@ name: Publish GitHub Pages
 on:
   push:
     branches:
+      - main
       - master
     tags:
       - v*
@@ -22,32 +23,24 @@ jobs:
       # - name: Setup MTK Certification
       #   uses: https://gitea.mediatek.inc/actions/mtk-cert-action@v1.2.0
 
-      # - name: Setup SSH Key
-      #   uses: shimataro/ssh-key-action@v2.7.0
-      #   with:
-      #     key: ${{ secrets.SSH_KEY }}
-      #     name: id_rsa
-      #     known_hosts: unnecessary
-      #     config: |
-      #       Host *
-      #         StrictHostKeyChecking no
-      #         UserKnownHostsFile=/dev/null
-      #     if_key_exists: replace
-
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           version: "latest"
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy docs
         run: |
+          mkdir docs
+          cp ./README.md ./docs/index.md
+          cp ./README.zh-CN.md ./docs/README.zh-CN.md
+          cp ./README.zh-TW.md ./docs/README.zh-TW.md
           uv sync --group docs
           uv run make gen-docs
           uv run mkdocs build
@@ -56,7 +49,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Upload to GitHub Pages
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./site
 
